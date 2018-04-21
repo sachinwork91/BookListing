@@ -13,6 +13,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -27,7 +29,8 @@ import java.util.ArrayList;
 public class BookAdapter extends ArrayAdapter<BookDetails>{
 
     private Context ctx;
-    ImageView bookImage;
+    ImageView bookImageview;
+
     public BookAdapter(Context ctx, ArrayList<BookDetails> bookDetails){
         super(ctx, 0 , bookDetails);
         this.ctx = ctx;
@@ -44,10 +47,10 @@ public class BookAdapter extends ArrayAdapter<BookDetails>{
 
         TextView authors = (TextView) convertView.findViewById(R.id.authors );
         TextView title = (TextView) convertView.findViewById(R.id.bookTitle );
-
-
+        bookImageview = (ImageView) convertView.findViewById(R.id.bookImage);
+        Picasso.get().load(bookdetail.getImageUrl()).into(bookImageview);
         authors.setText(bookdetail.getAuthor());
-        title.setText(bookdetail.getTitle());
+        title.setText(bookdetail.getTitle() + "price "+ bookdetail.getPrice() + " rating"+ bookdetail.getRating());
         return convertView;
     }
 

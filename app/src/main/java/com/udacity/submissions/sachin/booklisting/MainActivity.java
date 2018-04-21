@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -54,6 +55,18 @@ public class MainActivity extends AppCompatActivity {
         searchQueryetv = (EditText) findViewById(R.id.searchqueryid);
         results_list_view = (ListView) findViewById(R.id.results_list_view);
         results_list_view.setEmptyView(findViewById(R.id.emptyElement));
+
+        results_list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                BookDetails currentBook =  bookDetails.get(i);
+                Intent intent = new Intent(MainActivity.this, DetailedDescription.class);
+                intent.putExtra("currentBook", currentBook);
+                startActivity(intent);
+            }
+        });
+
+
 
         //IF the Orientation of the phone is changed
         if (savedInstanceState != null) {
@@ -158,12 +171,22 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 0; i < itemsArray.length(); i++) {
                     JSONObject jsonDetails = itemsArray.getJSONObject(i);
                     JSONObject volumeInfo = jsonDetails.getJSONObject("volumeInfo");
-                    String title = volumeInfo.getString("title");
+                    JSONObject imageLinks = volumeInfo.getJSONObject("imageLinks");
 
+                    String title = volumeInfo.getString("title");
+                    String description = volumeInfo.getString("description");
+                    String averageRating="Not Available";
+                    try {
+                         averageRating = volumeInfo.getString("averageRating");
+                    }catch(JSONException e){
+
+                    }
+
+                    String imageUrl =   imageLinks.getString("smallThumbnail");
 
                     JSONArray authorsJSONarray = volumeInfo.getJSONArray("authors");
                     String authorslist = getAuthorsString(authorsJSONarray);
-                    listOfBooks.add(new BookDetails(title, authorslist));
+                    listOfBooks.add(new BookDetails(title, authorslist, imageUrl, 5 ,description, averageRating));
                 }
             }
 
