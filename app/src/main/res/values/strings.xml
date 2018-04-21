@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">BookListing</string>
+    <string name="title_activity_results">Results</string>
+    <string name="emptyQueryErrorToast">Please Enter the Keywords to search</string>
+    <string name="parcalableKeyForBookDetails">BookDetails</string>
+
+
+</resources>
